@@ -2,28 +2,49 @@ import { useState } from "react";
 import CompanyModal from "./CompanyModal";
 
 function AlphabetFilter({ contacts }) {
-  const [selectedLetter, setSelectedLetter] = useState("A");
+  const [selectedLetter, setSelectedLetter] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [showCompanies, setShowCompanies] = useState(false);
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-  const companies = [
-    ...new Set(
-      contacts
-        .filter(
-          (contact) =>
-            contact.Company &&
-            contact.Company
-              .toUpperCase()
-              .startsWith(selectedLetter)
-        )
-        .map((contact) => contact.Company)
-    ),
-  ].sort();
+  const companies =
+    selectedLetter === ""
+      ? []
+      : [
+          ...new Set(
+            contacts
+              .filter(
+                (contact) =>
+                  contact.Company &&
+                  contact.Company
+                    .toUpperCase()
+                    .startsWith(selectedLetter)
+              )
+              .map((contact) => contact.Company)
+          ),
+        ].sort();
 
   return (
     <div className="card">
-      <h3>Company Contacts</h3>
+
+      <div className="company-header">
+
+        <h3>Company Contacts</h3>
+
+        <button
+          className="view-company-btn"
+          disabled={!selectedLetter}
+          onClick={() =>
+            setShowCompanies(!showCompanies)
+          }
+        >
+          {showCompanies
+            ? "Hide Companies"
+            : "View Companies"}
+        </button>
+
+      </div>
 
       <div className="alphabet-container">
         {alphabet.map((letter) => (
@@ -37,6 +58,7 @@ function AlphabetFilter({ contacts }) {
             onClick={() => {
               setSelectedLetter(letter);
               setSelectedCompany(null);
+              setShowCompanies(false);
             }}
           >
             {letter}
@@ -45,9 +67,25 @@ function AlphabetFilter({ contacts }) {
       </div>
 
       <div className="company-list">
-        {companies.length === 0 ? (
+
+        {!selectedLetter ? (
+
+          <div className="select-letter">
+            Select an alphabet first.
+          </div>
+
+        ) : !showCompanies ? (
+
+          <div className="select-letter">
+            {/* Click "View Companies" to display the company list. */}
+          </div>
+
+        ) : companies.length === 0 ? (
+
           <p>No company found.</p>
+
         ) : (
+
           companies.map((company, index) => (
             <div
               key={index}
@@ -57,7 +95,9 @@ function AlphabetFilter({ contacts }) {
               {company}
             </div>
           ))
+
         )}
+
       </div>
 
       <CompanyModal
@@ -65,6 +105,7 @@ function AlphabetFilter({ contacts }) {
         contacts={contacts}
         onClose={() => setSelectedCompany(null)}
       />
+
     </div>
   );
 }
