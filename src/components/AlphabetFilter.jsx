@@ -4,7 +4,7 @@ import CompanyModal from "./CompanyModal";
 function AlphabetFilter({ contacts }) {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
-  const [showCompanies, setShowCompanies] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -25,26 +25,14 @@ function AlphabetFilter({ contacts }) {
           ),
         ].sort();
 
+  const visibleCompanies = showAll
+    ? companies
+    : companies.slice(0, 8);
+
   return (
     <div className="card">
 
-      <div className="company-header">
-
-        <h3>Company Contacts</h3>
-
-        <button
-          className="view-company-btn"
-          disabled={!selectedLetter}
-          onClick={() =>
-            setShowCompanies(!showCompanies)
-          }
-        >
-          {showCompanies
-            ? "Hide Companies"
-            : "View Companies"}
-        </button>
-
-      </div>
+      <h3>Company Contacts</h3>
 
       <div className="alphabet-container">
         {alphabet.map((letter) => (
@@ -58,7 +46,7 @@ function AlphabetFilter({ contacts }) {
             onClick={() => {
               setSelectedLetter(letter);
               setSelectedCompany(null);
-              setShowCompanies(false);
+              setShowAll(false);
             }}
           >
             {letter}
@@ -66,39 +54,54 @@ function AlphabetFilter({ contacts }) {
         ))}
       </div>
 
-      <div className="company-list">
+      {selectedLetter === "" ? (
 
-        {!selectedLetter ? (
+        <div className="select-letter">
+          Press these letters..
+        </div>
 
-          <div className="select-letter">
-            Select an alphabet first.
+      ) : companies.length === 0 ? (
+
+        <p>No company found.</p>
+
+      ) : (
+
+        <>
+          <div className="company-list">
+
+            {visibleCompanies.map((company, index) => (
+              <div
+                key={index}
+                className="company-card"
+                onClick={() =>
+                  setSelectedCompany(company)
+                }
+              >
+                {company}
+              </div>
+            ))}
+
           </div>
 
-        ) : !showCompanies ? (
-
-          <div className="select-letter">
-            {/* Click "View Companies" to display the company list. */}
-          </div>
-
-        ) : companies.length === 0 ? (
-
-          <p>No company found.</p>
-
-        ) : (
-
-          companies.map((company, index) => (
-            <div
-              key={index}
-              className="company-card"
-              onClick={() => setSelectedCompany(company)}
+          {companies.length > 8 && !showAll && (
+            <button
+              className="view-more-btn"
+              onClick={() => setShowAll(true)}
             >
-              {company}
-            </div>
-          ))
+              View More
+            </button>
+          )}
 
-        )}
-
-      </div>
+          {companies.length > 8 && showAll && (
+            <button
+              className="view-more-btn"
+              onClick={() => setShowAll(false)}
+            >
+              Show Less
+            </button>
+          )}
+        </>
+      )}
 
       <CompanyModal
         company={selectedCompany}
