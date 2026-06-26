@@ -9,7 +9,8 @@ import CompanyChart from "./components/CompanyChart";
 import DesignationChart from "./components/DesignationChart";
 import MissingFields from "./components/MissingFields";
 import BusinessInsights from "./components/BusinessInsights";
-import ContactTable from "./components/ContactTable";
+// import ContactTable from "./components/ContactTable";
+import AlphabetFilter from "./components/AlphabetFilter";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -98,7 +99,8 @@ function App() {
         <BusinessInsights contacts={filteredContacts} />
       </div>
 
-      <ContactTable contacts={filteredContacts} />
+      {/* <ContactTable contacts={filteredContacts} /> */}
+      <AlphabetFilter contacts={filteredContacts} />
     </div>
   );
 }
