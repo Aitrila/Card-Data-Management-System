@@ -1283,6 +1283,79 @@ color:white;
 .dark .view-company-btn:hover:not(:disabled){
     background:#2563eb;
 }
+.view-more-btn{
+  display:block;
+  margin:20px auto;
+  padding:10px 22px;
+  border:none;
+  border-radius:8px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.view-more-btn:hover{
+  background:#1d4ed8;
+}
+
+.dark .view-more-btn{
+  background:#3b82f6;
+}
+
+.dark .view-more-btn:hover{
+  background:#2563eb;
+}
+.view-more-btn{
+  display:inline-block;
+  margin:15px 0 0 10px;
+}
+.company-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.company-search {
+  width: 280px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.company-search:focus {
+  border-color: #2563eb;
+}
+
+.dark .company-search {
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid #475569;
+}
+.company-search {
+  width: 240px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.company-search:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.dark .company-search {
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid #475569;
+}
 
 @media (max-width: 1024px){
 

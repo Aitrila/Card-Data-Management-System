@@ -5,6 +5,7 @@ function AlphabetFilter({ contacts }) {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [showAll, setShowAll] = useState(false);
+  const [searchCompany, setSearchCompany] = useState("");
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -25,14 +26,32 @@ function AlphabetFilter({ contacts }) {
           ),
         ].sort();
 
+  const filteredCompanies = companies.filter((company) =>
+    company
+      .toLowerCase()
+      .includes(searchCompany.toLowerCase())
+  );
+
   const visibleCompanies = showAll
-    ? companies
-    : companies.slice(0, 8);
+    ? filteredCompanies
+    : filteredCompanies.slice(0, 8);
 
   return (
     <div className="card">
 
-      <h3>Company Contacts</h3>
+      <div className="company-header">
+        <h3>Company Contacts</h3>
+
+        <input
+          type="text"
+          className="company-search"
+          placeholder="🔍 Search company..."
+          value={searchCompany}
+          onChange={(e) =>
+            setSearchCompany(e.target.value)
+          }
+        />
+      </div>
 
       <div className="alphabet-container">
         {alphabet.map((letter) => (
@@ -55,20 +74,14 @@ function AlphabetFilter({ contacts }) {
       </div>
 
       {selectedLetter === "" ? (
-
         <div className="select-letter">
           Press these letters..
         </div>
-
-      ) : companies.length === 0 ? (
-
+      ) : filteredCompanies.length === 0 ? (
         <p>No company found.</p>
-
       ) : (
-
         <>
           <div className="company-list">
-
             {visibleCompanies.map((company, index) => (
               <div
                 key={index}
@@ -80,10 +93,9 @@ function AlphabetFilter({ contacts }) {
                 {company}
               </div>
             ))}
-
           </div>
 
-          {companies.length > 8 && !showAll && (
+          {filteredCompanies.length > 8 && !showAll && (
             <button
               className="view-more-btn"
               onClick={() => setShowAll(true)}
@@ -92,7 +104,7 @@ function AlphabetFilter({ contacts }) {
             </button>
           )}
 
-          {companies.length > 8 && showAll && (
+          {filteredCompanies.length > 8 && showAll && (
             <button
               className="view-more-btn"
               onClick={() => setShowAll(false)}
@@ -108,7 +120,6 @@ function AlphabetFilter({ contacts }) {
         contacts={contacts}
         onClose={() => setSelectedCompany(null)}
       />
-
     </div>
   );
 }
